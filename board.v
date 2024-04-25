@@ -4,8 +4,7 @@ const cell_len = 12 // Row and Column length of the board
 
 struct Board {
 mut:
-	cells      [cell_len][cell_len]int
-	cells_mask [cell_len][cell_len]bool
+	cells [cell_len][cell_len]bool
 }
 
 // Create a new board without generating map

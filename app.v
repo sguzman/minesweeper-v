@@ -1,7 +1,6 @@
 module main
 
 import gg
-import time
 import math
 
 enum GameState {
@@ -62,16 +61,6 @@ fn (mut app App) draw() {
 	app.draw_tiles()
 }
 
-fn (mut app App) draw_end_page(title string, description string) {
-	padding_y := (app.ui.window_height - app.ui.font_size * 12) / 2
-	padding_x := app.ui.window_width / 2
-
-	app.gg.draw_text(padding_x, padding_y, title, app.ui.get_text_format('title', 0))
-	app.gg.draw_text(padding_x, padding_y + app.ui.font_size * 4, description, app.ui.get_text_format('title',
-		0))
-}
-
-// TODO: improve performance
 fn (mut app App) draw_tiles() {
 	bsize := app.ui.board_size + app.ui.border_size
 	xstart := app.ui.x_padding + app.ui.border_size
@@ -86,23 +75,14 @@ fn (mut app App) draw_tiles() {
 
 	// Draw Tiles
 	for y, row in app.board.cells {
-		for x in row {
-			// Arguments values
-
-			is_visible := app.board.cells_mask[y][x]
-			color := if is_visible {
-				app.ui.theme.tile_open_color
-			} else {
-				app.ui.theme.tile_close_color
-			}
-
+		for x, _ in row {
 			// Rendered values
 			tile_x_start := xstart + tile_size / 10 + x * tile_size
 			tile_y_start := ystart + tile_size / 10 + y * tile_size
 			t_size := tile_size - border_size
 
 			app.gg.draw_rounded_rect_filled(tile_x_start, tile_y_start, t_size, t_size,
-				tile_size / 8, color)
+				tile_size / 8, app.ui.theme.tile_color)
 		}
 	}
 }
@@ -111,7 +91,7 @@ fn (app App) snap_cell_points() [][][2]Pos {
 	mut vb_cells := [][][2]Pos{}
 
 	for y, row in app.board.cells {
-		for x in row {
+		for x, _ in row {
 			start_x := app.ui.x_padding + app.ui.border_size + x * 11 * app.ui.tile_size / 10
 			start_y := app.ui.y_padding + app.ui.border_size + y * 11 * app.ui.tile_size / 10
 
