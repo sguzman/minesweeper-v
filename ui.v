@@ -15,8 +15,6 @@ mut:
 	window_height int
 	x_padding     int
 	y_padding     int
-	mine_img      gg.Image
-	flag_img      gg.Image
 	theme         &Theme = default_theme
 }
 
@@ -38,11 +36,6 @@ enum TextFormat {
 	header
 	tile
 	title
-}
-
-fn (mut ui UI) init_img(mut app_gg &gg.Context) ! {
-	ui.mine_img = app_gg.create_image(ui.theme.mine_img)!
-	ui.flag_img = app_gg.create_image(ui.theme.flag_img)!
 }
 
 fn (ui UI) get_text_format(f string, val int) gx.TextCfg {
